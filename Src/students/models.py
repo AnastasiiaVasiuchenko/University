@@ -1,7 +1,8 @@
 from django.db import models
 from datetime import datetime
 from  faker import Faker
-
+import random
+import string
 
 class Student(models.Model):
     first_name = models.CharField(max_length=20)
@@ -37,6 +38,18 @@ class Group(models.Model):
 
     def get_info(self):
         return f'{self.group_id} {self.student_cnt} {self.teacher_name}'
+
+
+    @classmethod
+    def generate_group(cls):
+        faker = Faker()
+        group = cls(
+            group_id=''.join(random.choice(string.ascii_letters + string.digits) for i in range(3)),
+            student_cnt=random.randint(3, 10),
+            teacher_name=faker.name()
+        )
+        group.save()
+        return group
 
 
 

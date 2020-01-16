@@ -5,7 +5,7 @@
     <title>Group add</title>
 </head>
 <body>
-<form action="/groups/add/" method="post">
+<form action="{% url 'group-add' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input name="submit" type="submit">

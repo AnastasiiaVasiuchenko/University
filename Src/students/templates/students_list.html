@@ -5,8 +5,9 @@
     <title>Students list</title>
 </head>
 <body>
-<form action="/students/" method="get">
-    <input name="first_name">
+<form action="{% url 'students' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
     <input name="submit" type="submit">
 </form>
 

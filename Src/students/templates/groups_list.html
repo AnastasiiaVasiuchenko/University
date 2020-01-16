@@ -5,8 +5,9 @@
     <title>Groups list</title>
 </head>
 <body>
-<form action="/groups/" method="get">
-    <input name="group_id">
+<form action="{% url 'groups' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
     <input name="submit" type="submit">
 </form>
 

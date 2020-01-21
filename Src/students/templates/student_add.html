@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}ADD STUDENT{% endblock title %}
+
 {% block content %}
-ADD STUDENT
+
 <form action="{% url 'stud_add' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}

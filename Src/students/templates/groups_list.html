@@ -1,16 +1,29 @@
 {% extends 'base.html' %}
 
+{% block title %}GROUP LIST{% endblock title %}
+
 {% block content %}
-GROUP LIST
 
 <form action="{% url 'groups' %}" method="get">
     <input name="group_id">
     <input name="submit" type="submit">
 </form>
+<table border="1">
+    <caption>GROUP LIST</caption>
+    <tr>
+        <th>EDIT</th>
+        <th>ID_Group</th>
+        <th>Student_cnt</th>
+        <th>Teacher_Name</th>
+    </tr>
+    {% for group in groups %}
+    <tr>
+        <td>  <a href="{% url 'group-edit' pk=group.id %}"> group EDIT </a> </td>
+        <td>{{ group.group_id }}</td>
+        <td>{{ group.student_cnt }}</td>
+        <td>{{ group.teacher_name }}</td>
+    </tr>
 
-{% for group in groups %}
-    <a href="{% url 'group-edit' pk=group.id %}"> group EDIT </a>
-    {{ group.group_id }} {{ group.student_cnt }} {{ group.teacher_name }}<br>
 {% endfor %}
-
+</table>
 {% endblock content %}

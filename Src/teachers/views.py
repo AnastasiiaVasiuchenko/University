@@ -13,7 +13,6 @@ def generate_teacher(request):
 
 def teachers(request):
     queryset = Teacher.objects.all()
-    response = ''
 
     filtr_param = request.GET.get('filtr_param')
     if filtr_param:
@@ -25,11 +24,9 @@ def teachers(request):
         # __startswith --> like 'blabla%'
         # __istarts/ends/--> регистронезависимый поиск
 
-    for teacher in queryset:
-        response += teacher.get_info() + '<br>'
     return render(request,
                   'teachers_list.html',
-                  context={'teachers_list': response})
+                  context={'teachers': queryset})
 
 
 def teachers_add(request):

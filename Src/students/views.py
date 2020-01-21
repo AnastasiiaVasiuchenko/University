@@ -12,8 +12,6 @@ def generate_student(request):
 
 def students(request):
     queryset = Student.objects.all()
-    response = ''
-
     fn = request.GET.get('first_name')
     if fn:
         queryset = queryset.filter(first_name__contains=fn)
@@ -21,12 +19,9 @@ def students(request):
         # __endswith --> like '%blabla'
         # __startswith --> like 'blabla%'
         # __istarts/ends/--> регистронезависимый поиск
-
-    for student in queryset:
-        response += student.get_info() + '<br>'
     return render(request,
                   'students_list.html',
-                  context={'students_list': response})
+                  context={'students': queryset})
 
 
 def generate_group(request):
@@ -36,17 +31,14 @@ def generate_group(request):
 
 def groups(request):
     queryset = Group.objects.all()
-    response = ''
 
     grid = request.GET.get('group_id')
     if grid:
         queryset = queryset.filter(group_id__contains=grid)
 
-    for group in queryset:
-        response += group.get_info() + '<br>'
     return render(request,
                   'groups_list.html',
-                  context={'groups_list': response})
+                  context={'groups': queryset})
 
 
 def stud_add(request):
@@ -104,6 +96,10 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
+            with open('log.txt', 'a') as log:
+                for key, value in form.cleaned_data.items():
+                    log.write('{}:{}\n'.format(key, value))
+                log.write('\n')
             return HttpResponseRedirect(reverse('contact'))
     else:
         form = ContactForm()

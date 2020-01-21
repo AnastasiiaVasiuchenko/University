@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Students list</title>
-</head>
-<body>
-<form action="{% url 'students' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% extends 'base.html' %}
+
+{% block content %}
+STUDENTS LIST
+
+<form action="{% url 'students' %}" method="get">
+    <input name="first_name">
     <input name="submit" type="submit">
 </form>
+<form>
+  <button formaction="{% url 'stud_add' %}">Add student</button>
+</form>
 
-{{ students_list|safe }}
-</body>
-</html>
+{% for student in students %}
+    <a href="{% url 'stud-edit' pk=student.id %}"> student EDIT </a>
+    {{ student.id }} {{ student.email}} {{ student.last_name }}<br>
+{% endfor %}
+
+{% endblock content %}

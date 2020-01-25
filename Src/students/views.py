@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from students.models import Student, Group
-from students.forms import StudentsAddForm, GroupsAddForm
+from students.forms import StudentsAddForm, GroupsAddForm, ContactForm
 
 
 def generate_student(request):
@@ -11,8 +12,6 @@ def generate_student(request):
 
 def students(request):
     queryset = Student.objects.all()
-    response = ''
-
     fn = request.GET.get('first_name')
     if fn:
         queryset = queryset.filter(first_name__contains=fn)
@@ -20,12 +19,9 @@ def students(request):
         # __endswith --> like '%blabla'
         # __startswith --> like 'blabla%'
         # __istarts/ends/--> регистронезависимый поиск
-
-    for student in queryset:
-        response += student.get_info() + '<br>'
     return render(request,
                   'students_list.html',
-                  context={'students_list': response})
+                  context={'students': queryset})
 
 
 def generate_group(request):
@@ -35,17 +31,14 @@ def generate_group(request):
 
 def groups(request):
     queryset = Group.objects.all()
-    response = ''
 
     grid = request.GET.get('group_id')
     if grid:
         queryset = queryset.filter(group_id__contains=grid)
 
-    for group in queryset:
-        response += group.get_info() + '<br>'
     return render(request,
                   'groups_list.html',
-                  context={'groups_list': response})
+                  context={'groups': queryset})
 
 
 def stud_add(request):
@@ -53,7 +46,7 @@ def stud_add(request):
         form = StudentsAddForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/students/')
+            return HttpResponseRedirect(reverse('students'))
     else:
         form = StudentsAddForm()
 
@@ -74,3 +67,63 @@ def group_add(request):
     return render(request,
                   'group_add.html',
                   context={'form': form})
+
+
+def stud_edit(request, pk):
+    from students.forms import StudentsAddForm
+
+    try:
+        student = Student.objects.get(id=pk)
+    except Student.DoesNotExist:
+        return HttpResponseNotFound(f'Student with id {pk} not found')
+
+    if request.method == 'POST':
+        form = StudentsAddForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('students'))
+    else:
+        form = StudentsAddForm(instance=student)
+
+    return render(request,
+                  'student_edit.html',
+                  context={'form': form, 'pk': pk})
+
+
+def contact(request):
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            with open('log.txt', 'a') as log:
+                for key, value in form.cleaned_data.items():
+                    log.write('{}:{}\n'.format(key, value))
+                log.write('\n')
+            return HttpResponseRedirect(reverse('contact'))
+    else:
+        form = ContactForm()
+
+    return render(request,
+                  'contact.html',
+                  context={'form': form})
+
+
+def group_edit(request, pk):
+
+    try:
+        group = Group.objects.get(id=pk)
+    except Group.DoesNotExist:
+        return HttpResponseNotFound(f'Group with id {pk} not found')
+
+    if request.method == 'POST':
+        form = GroupsAddForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('groups'))
+    else:
+        form = GroupsAddForm(instance=group)
+
+    return render(request,
+                  'group_edit.html',
+                  context={'form': form, 'pk': pk})

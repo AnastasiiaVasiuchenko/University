@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime
-from  faker import Faker
+from faker import Faker
 
 
 class Teacher(models.Model):

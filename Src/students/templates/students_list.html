@@ -16,6 +16,7 @@
     <tr>
         <th>EDIT</th>
         <th>ID_Student</th>
+        <th>ID_Group</th>
         <th>Last_Name</th>
         <th>Birth_Date</th>
         <th>e-mail</th>
@@ -27,6 +28,7 @@
     <tr>
         <td> <a href="{% url 'stud-edit' pk=student.id %}"> student EDIT </a> </td>
         <td>{{ student.id }}</td>
+        <td>{{ student.group_id.id }}</td>
         <td>{{ student.last_name }}</td>
         <td>{{ student.birth_date }}</td>
         <td>{{ student.email}}</td>

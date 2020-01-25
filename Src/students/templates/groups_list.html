@@ -13,15 +13,17 @@
     <tr>
         <th>EDIT</th>
         <th>ID_Group</th>
+        <th>Teacher</th>
+        <th>Starosta</th>
         <th>Student_cnt</th>
-        <th>Teacher_Name</th>
     </tr>
     {% for group in groups %}
     <tr>
         <td>  <a href="{% url 'group-edit' pk=group.id %}"> group EDIT </a> </td>
         <td>{{ group.group_id }}</td>
+        <td>{{ group.teacher.full_name }}</td>
+        <td>{{ group.starosta.full_name }}</td>
         <td>{{ group.student_cnt }}</td>
-        <td>{{ group.teacher_name }}</td>
     </tr>
 
 {% endfor %}

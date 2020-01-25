@@ -11,7 +11,7 @@ def generate_student(request):
 
 
 def students(request):
-    queryset = Student.objects.all()
+    queryset = Student.objects.all().select_related('group_id')  # name vneshniy klych
     fn = request.GET.get('first_name')
     if fn:
         queryset = queryset.filter(first_name__contains=fn)
@@ -30,7 +30,7 @@ def generate_group(request):
 
 
 def groups(request):
-    queryset = Group.objects.all()
+    queryset = Group.objects.all().select_related('teacher', 'starosta')
 
     grid = request.GET.get('group_id')
     if grid:

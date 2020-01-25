@@ -9,7 +9,7 @@ class Teacher(models.Model):
     birth_date = models.DateField()
     email = models.EmailField()
     # add avatar TODO
-    telephone = models.CharField(max_length=16)  # clean phone TODO
+    telephone = models.CharField(max_length=30)  # clean phone TODO
 
     def get_info(self):
         return f'{self.first_name} {self.last_name} {self.birth_date} {self.email}'
@@ -26,6 +26,10 @@ class Teacher(models.Model):
         )
         teacher.save()
         return teacher
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 

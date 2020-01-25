@@ -66,6 +66,11 @@ class Group(models.Model):
         group.save()
         return group
 
+    def __str__(self):
+        return f'{self.group_id}'
+
+
+
 
 
 

@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student add</title>
-</head>
-<body>
-<form action="/students/add/" method="post">
+{% extends 'base.html' %}
+
+{% block title %}ADD STUDENT{% endblock title %}
+
+{% block content %}
+
+<form action="{% url 'stud_add' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input name="submit" type="submit">
 </form>
-</body>
-</html>
+{% endblock content %}

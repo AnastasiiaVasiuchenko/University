@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}ADD GROUP{% endblock title %}
+{% block title %}CONTACT{% endblock title %}
 
 {% block content %}
-
-<form action="{% url 'group-add' %}" method="post">
+<form action="{% url 'contact' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input name="submit" type="submit">

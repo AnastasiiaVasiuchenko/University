@@ -1,15 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Students list</title>
-</head>
-<body>
-<form action="/students/" method="get">
+{% extends 'base.html' %}
+
+{% block title %}STUDENTS LIST{% endblock title %}
+
+{% block content %}
+
+<form action="{% url 'students' %}" method="get">
     <input name="first_name">
     <input name="submit" type="submit">
 </form>
+<form>
+  <button formaction="{% url 'stud_add' %}">Add student</button>
+</form>
+<table border="1">
+    <caption>STUDENTS LIST</caption>
+    <tr>
+        <th>EDIT</th>
+        <th>ID_Student</th>
+        <th>ID_Group</th>
+        <th>Last_Name</th>
+        <th>Birth_Date</th>
+        <th>e-mail</th>
+        <th>Telephone</th>
+        <th>Address</th>
 
-{{ students_list|safe }}
-</body>
-</html>
+    </tr>
+    {% for student in students %}
+    <tr>
+        <td> <a href="{% url 'stud-edit' pk=student.id %}"> student EDIT </a> </td>
+        <td>{{ student.id }}</td>
+        <td>{{ student.group_id.id }}</td>
+        <td>{{ student.last_name }}</td>
+        <td>{{ student.birth_date }}</td>
+        <td>{{ student.email}}</td>
+        <td>{{ student.telephone }}</td>
+        <td>{{ student.address }}</td>
+    </tr>
+
+     {% endfor %}
+</table>
+{% endblock content %}
+

@@ -1,16 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Groups list</title>
-</head>
-<body>
-<form action="/groups/" method="get">
+{% extends 'base.html' %}
+
+{% block title %}GROUP LIST{% endblock title %}
+
+{% block content %}
+
+<form action="{% url 'groups' %}" method="get">
     <input name="group_id">
     <input name="submit" type="submit">
 </form>
+<table border="1">
+    <caption>GROUP LIST</caption>
+    <tr>
+        <th>EDIT</th>
+        <th>ID_Group</th>
+        <th>Teacher</th>
+        <th>Starosta</th>
+        <th>Student_cnt</th>
+    </tr>
+    {% for group in groups %}
+    <tr>
+        <td>  <a href="{% url 'group-edit' pk=group.id %}"> group EDIT </a> </td>
+        <td>{{ group.group_id }}</td>
+        <td>{{ group.teacher.full_name }}</td>
+        <td>{{ group.starosta.full_name }}</td>
+        <td>{{ group.student_cnt }}</td>
+    </tr>
 
-{{ groups_list|safe }}
-
-</body>
-</html>
+{% endfor %}
+</table>
+{% endblock content %}

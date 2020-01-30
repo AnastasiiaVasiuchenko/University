@@ -1,15 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Teachers list</title>
-</head>
-<body>
-<form action="/teachers/" method="get">
-    <input name="filtr_param">
+{% extends 'base.html' %}
+
+{% block title %}TEACHERS LIST{% endblock title %}
+
+{% block content %}
+
+<form action="{% url 'teachers' %}" method="get">
+    <input name="first_name">
     <input name="submit" type="submit">
 </form>
+<table border="1">
+    <caption>TEACHERS LIST</caption>
+    <tr>
+        <th>EDIT</th>
+        <th>First_name</th>
+        <th>Last_name</th>
+        <th>Birth_date</th>
+        <th>e-mail</th>
+        <th>Telephone</th>
+    </tr>
+    {% for teacher in teachers %}
+    <tr>
+        <td> <a href="{% url 'teachers-edit' pk=teacher.id %}">Teacher EDIT</a> </td>
+        <td>{{ teacher.first_name }}</td>
+        <td>{{ teacher.last_name }}</td>
+        <td>{{ teacher.birth_date }}</td>
+        <td>{{ teacher.email }}</td>
+        <td>{{ teacher.telephone }}</td>
+    </tr>
 
-{{ teachers_list|safe }}
-</body>
-</html>
+{% endfor %}
+</table>
+{% endblock content %}

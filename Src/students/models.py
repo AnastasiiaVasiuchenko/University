@@ -8,10 +8,10 @@ import string
 class Student(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    birth_date = models.DateField()
-    email = models.EmailField()
+    birth_date = models.DateField(null=True, blank=True, default=None)
+    email = models.EmailField(unique=True)
     # add avatar TODO
-    telephone = models.CharField(max_length=30)  # clean phone TODO
+    telephone = models.CharField(max_length=30, unique=True)  # clean phone TODO
     address = models.CharField(max_length=255, null=True, blank=True)
     group_id = models.ForeignKey('students.Group',
                                  null=True, blank=True,
@@ -68,6 +68,12 @@ class Group(models.Model):
 
     def __str__(self):
         return f'{self.group_id}'
+
+
+from students.signals import *
+
+
+
 
 
 

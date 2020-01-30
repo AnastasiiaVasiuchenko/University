@@ -1,14 +1,41 @@
-from django.forms import ModelForm, Form, EmailField, CharField
+from django.forms import ModelForm, Form, EmailField, CharField, ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
 
 from students.models import Student, Group
 
 
-class StudentsAddForm(ModelForm):
+class StudentBaseForm(ModelForm):
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].lower()
+        email_exists = Student.objects.filter(email__iexact=email).exclude(email__iexact=email).exists()
+
+        if email_exists:
+            raise ValidationError(f'{email} is already used')
+        return email
+
+    def clean_phone(self):
+        telephone = self.cleaned_data['telephone']
+        tel_exists = Student.objects.filter(tel__iexact=telephone).exclude(tel__iexact=telephone).exists()
+
+        if tel_exists:
+            raise ValidationError(f'{telephone} is already used')
+        elif not telephone.isdigit():
+            raise ValidationError(f'use only digits')
+        return telephone
+
+
+class StudentsAddForm(StudentBaseForm):
     class Meta:
         model = Student
         fields = '__all__'
+
+
+class StudentAdminForm(StudentBaseForm):
+    class Meta:
+        model = Student
+        fields = ('id', 'email', 'first_name', 'last_name', 'telephone')
 
 
 class ContactForm(Form):
